@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <title>api gamificada</title>
+        <link href="https://fonts.googleapis.com/css?family=Raleway" rel="stylesheet">
+        <link href="/styles.css" rel="stylesheet" />
+    </head>
+    <body>
+        <h1 class="title">api gamificada</h1>
+        <div id="homepage">
+            <h1>prencha o link abaixo pra receber as intruções de como usar os links </h1>
+            <div id="turma"></div>
+        </div>
+        <script src="https://unpkg.com/babel-standalone@6/babel.min.js"></script>
+        <script src="https://unpkg.com/react@15/dist/react.js"></script>
+        <script src="https://unpkg.com/react-dom@15/dist/react-dom.min.js"></script>
+
+        <!-- Create React Component -->
+        <script type="text/babel">
+        var Turma = React.createClass({
+            getInitialState: function(){
+                return({
+                    turma:null
+            });
+            
+            },
+            render: function(){
+                var turma = this.state.turma;
+                let links =[];
+                let api= "http://localhost:4000/"
+                if(turma != null){
+                   
+                    /*links.push(<li>
+                        <span className={turma.email_prodessor}></span>
+                        <span className={turma.prodessor}></span>
+                        <span className={turma._id}></span>
+                    </li>)*/http://localhost:4000/turma
+                   links = turma.map(function(turma, index){
+                        console.log(turma.nome)
+                        return(
+                            <li key={index}>
+                                <span className="mensagem">a api e basiado em um sistema rest,então e pocivel trabalhar diretamente com os links ou ir pelo painel</span><br />
+                                <span className="id">o id da turma :{turma._id}</span><br/>
+                                <span className="mensagem">links GET com id</span><br />
+                                <span className="GET">{api}turma/?_id={turma._id}</span><br />
+                                <span className="mensagem">links GET com email e senha</span><br />
+                                <span className="GET">{api}turmas/?email="seu_email"&senha="sua_senha"</span><br/>
+                                <span className="post">{api}</span><br />
+                                <br />
+                                <br />
+                                <br />
+                                <br />
+                                <br />
+
+                            </li>
+                        );
+                    });
+                };
+                return(
+                    <div id="ninja-container">
+                        <form id="search" onSubmit={this.handleSubmit}>
+                            <label>email do professor:</label>
+                            <input type="text" ref="email" placeholder="email" required />
+                            <label>senha:</label>
+                            <input type="password" ref="senha" placeholder="senha" required />
+                            <input type="submit" value="Find turma" />
+                        </form>
+                        <ul>{links}</ul>
+                    </div>
+                );
+            },
+            handleSubmit: function(e){
+                e.preventDefault();
+                var email = this.refs.email.value;
+                var senha = this.refs.senha.value;
+                console.log(email,senha)
+                fetch('/api/turmas?email=' +email+ '&senha=' + senha,{method:'GET',headers: { 'Content-Type': 'application/json' }}).then(function(data){ 
+                    return data.json();
+                }).then( json => {
+                    this.setState({
+                       turma: json
+                    });
+                    console.log(json);
+                });
+            }
+        });
+        ReactDOM.render(<Turma />, document.getElementById('turma'));
+        </script>
+    </body>
+</html>

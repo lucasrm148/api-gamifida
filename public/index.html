@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <title>api gamificada</title>
+        <link href="https://fonts.googleapis.com/css?family=Raleway" rel="stylesheet">
+        <link href="/styles.css" rel="stylesheet" />
+    </head>
+    <body>
+
+        <h1 class="title">api gamificada</h1>
+        <div id="homepage">
+            <h1>crie sua turma aqui!</h1>
+            <div id="ninjas"></div>
+        </div>
+
+        <script src="https://unpkg.com/babel-standalone@6/babel.min.js"></script>
+        <script src="https://unpkg.com/react@15/dist/react.js"></script>
+        <script src="https://unpkg.com/react-dom@15/dist/react-dom.min.js"></script>
+
+        <!-- Create React Component -->
+        <script type="text/babel">
+        var Ninjas = React.createClass({
+            getInitialState: function(){
+                return({
+                    ninjas: []
+                });
+            },
+            render: function(){
+                var ninjas = this.state.ninjas;
+                return(
+                    <div id="ninja-container">
+                        <form id="search" onSubmit={this.handleSubmit}>
+                            <label>nome da turma :</label>
+                            <input type="text" ref="nome" placeholder="nome" required />
+                            <label>email do professor:</label>
+                            <input type="text" ref="email" placeholder="email" required />
+                            <label>nome do professor:</label>
+                            <input type="text" ref="professor" placeholder="professor" required />
+                            <label>senha:</label>
+                            <input type="password" ref="senha" placeholder="senha" required />
+                            <input type="submit" value="criate turma"/>
+                        </form>
+                    <button><a href = "http://localhost:4000/links">se voce ja tem uma turma click aqui para pegar o link</a></button>
+                    </div>
+                );
+            },
+            handleSubmit: function(e){
+                e.preventDefault();
+                var nomeF = this.refs.nome.value;
+                var email= this.refs.email.value;
+                var senhaF = this.refs.senha.value;
+                var professorF = this.refs.professor.value;
+                alert("turma criada")
+                fetch('/api/turma',{
+                    method:'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        nome:nomeF,
+                        email_professor:email,
+                        senha:senhaF,
+                        professor:professorF
+                    })
+                });
+               /* fetch('/api/turma?nome=' + nome + '&email_professor=' + email+'&senha'+senha).then(function(data){
+                    return data.json();
+                }).then( json => {
+                    this.setState({
+                        ninjas: json
+                    });
+                    console.log(json);
+                });*/
+            }
+        });
+        ReactDOM.render(<Ninjas />, document.getElementById('ninjas'));
+        </script>
+
+
+    </body>
+</html>
